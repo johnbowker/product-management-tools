@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="fireworks.css">
+
+    <style type="text/css">
+    @import url("https://fonts.googleapis.com/css?family=Nunito");
+    html { height: 100% }
+    body { padding: 0px;
+           font-family: "Nunito", sans-serif;
+           margin: 0px;
+           overflow: hidden;
+           height: 100%;
+           background: linear-gradient(#000, rgb(0, 100, 194), rgb(255, 255, 255)); }
+
+           .modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.modal-title {
+    font-weight: bold;
+    font-size: medium;
+}
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+    </style>
+  </head>
+  <body>
+    <div id="winnerModal" class="modal">
+
+        <div class="pyro">
+            <div class="before"></div>
+            <div class="after"></div>
+        </div>
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div >
+                <p class="modal-title" id="winnerText"></p>
+            </div>
+            
+          <p id="winnerTextDetail"></p>
+          <img class="center" id="winnerImage" src="img/eastwood-35.png" width="400" height="100%"/>
+        </div>
+      
+      </div>
+    <canvas id="canvas"></canvas>
+    <script>
+
+// Credit: https://raksy.dyndns.org/wheel.html
+
+var modal = document.getElementById("winnerModal");
+var span = document.getElementsByClassName("close")[0];
+var winnerText = document.getElementById("winnerText");
+var winnerTextDetail = document.getElementById("winnerTextDetail");
+var winnerImage = document.getElementById("winnerImage");
+
+let canvas = document.getElementById("canvas");
+
+let sections = ["These are my things", 
+                "Never have I", 
+                "Alien Emoji", 
+                "2 truths and a lie", 
+                "Tell a Joke", 
+                "Coffee Talk", 
+                "I could have been"];
+
+let details = ["Take a picture of something in your house that is special to you.",
+                "Tell us something you've never done before. If anyone has done this its their turn!",
+                "Aliens have landed and they want to know what we do! Using only slack emojis construct a sentence tell them what your team does.",
+                "What it says on the tin; tell us 2 truths and 1 lie. We need to find the lie.",
+                "Tell us a joke, any joke!",
+                "We all have coffee (or tea) so lets talk about something completely random.",
+                "Regrets, I've had a few. What was something you wanted to be when you were a kid."]
+
+let images = ["flame-camera-access.png",
+                "flame-no-connection.png",
+                "flame-space-adventures.png",
+                "flame-books.png",
+                "flame-waiting.png",
+                "flame-7.png",
+                "flame-success.png"]
+
+let colors = ["#32CD32", "#FF0000", "#1496EC", "#FF8700", "#0B5394", "#9900FF", "#CC0000"];
+
+let wheels = null;
+let frame = null;
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+var img = new Image();
+img.src = "img/icons8-star-96.png";
+
+var centerPin = new Image();
+centerPin.src = "img/icons8-round-96.png";
+
+var winMarker = new Image();
+winMarker.src = "img/icons8-triangle-arrow-80.png";
+
+function repaint(angle) {
+    let r = Math.min(innerWidth, innerHeight) / 2.25 | 0;
+    if (wheels === null) {
+        wheels = [];
+        for (let selected=0; selected<sections.length; selected++) {
+            let c = document.createElement("canvas");
+            c.width = c.height = 2*r + 10;
+            let ctx = c.getContext("2d"), cx = 5 + r, cy = 5 + r;
+            let g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+
+            for (let i=0; i<sections.length; i++) {
+                let a0 = 2*Math.PI*i/sections.length;
+                let a1 = a0 + 2*Math.PI/(i == 0 ? 1 : sections.length);
+                let a = 2*Math.PI*(i+0.5)/sections.length;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, a0, a1, false);
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.fillStyle = g;
+                ctx.fill();
+                ctx.save();
+                if (i == selected) {
+                    ctx.fillStyle = "#FFF";
+                    ctx.shadowColor = "rgba(0,0,0,0.5)";
+                    ctx.shadowBlur = 1;
+                    ctx.shadowOffsetX = 2;
+                    ctx.shadowOffsetY = 2;
+                } else {
+                    ctx.fillStyle = "#FFF";
+                }
+                ctx.font = "bold " + r/sections.length*0.4 + "px serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.translate(cx, cy);
+                ctx.rotate(a);
+                ctx.fillText(sections[i], r*0.52, 0);
+
+                ctx.drawImage(img, r*0.80, -20, 40, 40);
+
+                ctx.restore();
+            }
+            wheels.push(c);
+        }
+    }
+    if (frame === null) {
+        frame = document.createElement("canvas");
+        frame.width = frame.height = 10 + 2*r*1.2 | 0;
+        let ctx = frame.getContext("2d"), cx = frame.width/2, cy = frame.height/2;
+        ctx.shadowBlur = 1;
+        ctx.shadowColor = "rgba(0,0,0,0.5)";
+        ctx.beginPath();
+        ctx.arc(cx, cy, r*1.015, 0, 2*Math.PI, true);
+        ctx.arc(cx, cy, r*0.995, 0, 2*Math.PI, false);
+        ctx.fillStyle = "#fcba03";
+        
+        ctx.fill();
+
+
+        //Center pin
+        
+        ctx.beginPath();
+        ctx.arc(cx, cy, r/10.5, 0, 2*Math.PI, false);
+        ctx.fill();
+
+        ctx.translate(cx, cy);
+        ctx.rotate(Math.PI - 0.3);
+        ctx.beginPath();
+        ctx.moveTo(- r*1.1, - r*0.05);
+        ctx.lineTo(- r*0.99, 0);
+        ctx.lineTo(- r*1.1, r*0.05);
+        ctx.drawImage(img, -50,-55,100,100);
+        ctx.fillStyle = "#F44";
+        ctx.fill();
+    }
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    let cx = innerWidth/2, cy = innerHeight/2;
+    let ctx = canvas.getContext("2d");
+    let selected = (Math.floor((- 0.2 - angle) * sections.length / (2*Math.PI))
+                    % sections.length);
+    if (selected < 0) selected += sections.length;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angle);
+    ctx.translate(-wheels[selected].width/2, -wheels[selected].height/2);
+    ctx.drawImage(wheels[selected], 0, 0);
+    ctx.restore();
+    ctx.drawImage(frame, cx - frame.width/2, cy - frame.height/2);
+}
+
+let angle = 0, running = false;
+function spinTo(winner, duration) {
+
+    let final_angle = (-0.2) - (0.5 + winner)*2*Math.PI/sections.length;
+    let start_angle = angle - Math.floor(angle/(2*Math.PI))*2*Math.PI - 5*2*Math.PI;
+    let start = performance.now();
+    function frame() {
+        let now = performance.now();
+        let t = Math.min(1, (now - start) / duration);
+        t = 3*t*t - 2*t*t*t; // ease in out
+        angle = start_angle + t * (final_angle - start_angle);
+        repaint(angle);
+        if (t < 1) requestAnimationFrame(frame); else running = false;
+
+        if(!running) {
+
+            winnerText.innerText = sections[winner];
+            winnerTextDetail.innerText = details[winner];
+            winnerImage.src = "img/" + images[winner];
+
+            console.log(sections[winner]);
+
+            modal.style.display = "block";
+        }
+    }
+    requestAnimationFrame(frame);
+    running = true;
+}
+
+canvas.onmousedown = function() {
+    if (!running) {
+        spinTo(Math.random()*sections.length|0, 5000);
+    }
+};
+
+repaint(angle);
+
+let csz = null;
+setInterval(function() {
+    let sz = innerWidth + "/" + innerHeight;
+    if (csz !== sz) {
+        csz = sz;
+        wheels = frame = null;
+        repaint(angle);
+    }
+}, 10);
+
+    </script>
+  </body>
+</html>
