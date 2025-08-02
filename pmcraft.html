@@ -16,8 +16,8 @@
     <style>
         /* Custom font and base styling */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Inter', serif;
+            background-color: #000;
         }
         /* A subtle transition for our cards on hover */
         .prompt-card {
@@ -44,17 +44,14 @@
 
     <div id="app" class="antialiased text-slate-700">
         <!-- Header -->
-        <header class="bg-white shadow-md sticky top-0 z-10">
+        <header class="bg-gray-900 shadow-lg sticky top-0 z-10">
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <span class="text-2xl font-bold text-indigo-600">
-                        <a href="https://colabcohorts.com">
-                            <img src="https://colabcohorts.com/wp-content/uploads/2025/03/logo.svg"/>
-                        </a>
-                    </span>
-                    <h1 class="text-xl font-bold text-slate-800">PromptCraft PM</h1>
+                <div class="flex items-center space-x-2">
+                    
+                    <a href="https://colabcohorts.com" target="_blank">PromptCraft<img src="https://colabcohorts.com/wp-content/uploads/2025/03/logo.svg"/></a>
+                        
                 </div>
-                <p class="hidden md:block text-sm text-slate-500">Your AI Co-pilot for Product Mastery</p>
+                <p class="hidden md:block text-sm text-slate-300">Your AI Co-pilot for Product Mastery</p>
             </div>
         </header>
 
@@ -63,8 +60,8 @@
             <!-- Loop through each category -->
             <section v-for="category in promptCategories" :key="category.name" class="mb-12">
                 <div class="flex items-center mb-6">
-                    <span class="text-2xl mr-4">{{ category.icon }}</span>
-                    <h2 class="text-2xl font-bold text-slate-800">{{ category.name }}</h2>
+                    <span class="text-2xl mr-4 text-slate-300">{{ category.icon }}</span>
+                    <h2 class="text-2xl font-bold text-slate-300">{{ category.name }}</h2>
                 </div>
                 
                 <!-- Grid for the prompt cards -->
@@ -77,9 +74,9 @@
                         </div>
                         <div class="bg-slate-50 p-4 flex justify-end items-center">
                              <!-- The button that triggers the copy and launch action -->
-                            <button @click="launchChatGPT(prompt.fullPrompt)" class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
+                            <button @click="launchChatGPT(prompt.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                <span>Launch & Copy</span>
+                                <span>Copy & Launch Co-Pilot 📎</span>
                             </button>
                         </div>
                     </div>
@@ -91,13 +88,14 @@
         <transition name="toast">
             <div v-if="showNotification" class="fixed bottom-5 right-5 bg-gray-900 text-white py-3 px-6 rounded-lg shadow-xl">
                 <p><i class="fa-solid fa-copy mr-2"></i>Prompt copied to clipboard!</p>
+                <p><i class="fa-solid fa-robot mr-2"></i>Launching Co-Pilot</p>
             </div>
         </transition>
 
     </div>
 
     <script>
-        const { createApp } = Vue
+        const { createApp, nextTick } = Vue
 
         createApp({
             data() {
@@ -227,7 +225,7 @@
                  * shows a notification, and attempts to launch the ChatGPT app.
                  * @param {string} promptText - The full prompt to be copied.
                  */
-                launchChatGPT(promptText) {
+                async launchChatGPT(promptText) {
                     // Create a temporary textarea element to hold the text
                     const textArea = document.createElement('textarea');
                     textArea.value = promptText;
@@ -252,7 +250,15 @@
                             }, 3000);
                             // Attempt to open the specified URL with the prompt
                             var URL = "https://copilot.microsoft.com/"
-                            window.open(URL + "?q=" + encodeURIComponent(promptText), '_blank');
+
+                            await nextTick();
+
+                            setTimeout(() => {
+                                window.open(URL + "?q=" + encodeURIComponent(promptText), '_blank');
+                                // Perform your desired action here
+                                }, 1000); // 1000 milliseconds = 1 second
+
+                            
                         } else {
                             console.error('Failed to copy prompt using execCommand.');
                         }
