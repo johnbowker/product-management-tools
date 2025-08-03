@@ -112,39 +112,238 @@
                                     fullPrompt: "Map out a workflow to help bank implementers onboard customers faster. Use this problem statement: 'Bank implementors currently face a fragmented and unintuitive experience when managing company-related settings, module enablement, and admin setup—these tasks are distributed across multiple locations in the system'. Use this persona: ' Bank Implementor (Implementation Manager/IT Admin at Partner Bank): Responsible for setting up new bank instances, configuring modules and add-ons, and managing administrative permissions"
                                 },
                                 {
-                                    title: 'Create Persona Workflow',
-                                    description: "Based on discovery data, create a detailed workflow for the primary user persona.",
-                                    fullPrompt: "Based on the discovery we've done, create a workflow for the main persona."
+                                    title: 'Refining Your Outcome Statement',
+                                    description: "Help refine your outcome statement to be specific, measurable, and aligned your organisations goals.",
+                                    fullPrompt: `AI Prompt:
+“Here is our current outcome statement: ‘[insert original statement]’.
+Help us improve and refine it by:
+Making it specific and measurable
+
+
+Focusing on a change in user behavior or experience
+
+
+Aligning it to Visa's mission to improve product activation and value delivery
+
+ Return 3 improved outcome statements, along with a 1-line rationale for each.”
+
+
+Context to Provide:
+Original outcome statement
+
+
+Target persona and product area (e.g. developer onboarding, small business tools)
+
+
+Expected Output:
+2-3 concise, actionable outcome statements with rationale
+
+
+Considerations:
+Avoid feature framing; focus on the user’s success
+
+
+Link to known friction points from past research
+`
                                 },
                                 {
-                                    title: 'Technical Stakeholder Review',
-                                    description: 'Review proposed solutions from the perspective of a technical stakeholder with limited resources.',
-                                    fullPrompt: 'Using what we know about the hypothesis and discovery, review the proposed solutions as a technical stakeholder with limited resourcing.'
+                                    title: 'Listing Opportunities Using Data',
+                                    description: 'Identify user opportunities by analyzing internal data sources like NPS verbatims, support logs, and usage drop-offs.',
+                                    fullPrompt: `AI Prompt:
+“Using the following internal sources — [paste insights, NPS verbatims, support logs, usage drop-offs] — identify a list of specific user opportunities (problems or unmet needs) that are blocking progress toward this outcome:
+'[paste outcome statement here]''
+Cluster these into 3-5 themes with supporting quotes or evidence.”
+Context to Provide:
+User research data or source material
+
+
+The refined outcome from step 1
+
+
+Expected Output:
+A set of 3-5 opportunity clusters with user-backed evidence
+
+
+Considerations:
+Prioritize real-world user pain
+
+
+Highlight issues Visa has the ability to address today
+`
                                 },
                                 {
-                                    title: 'Kano Model Analysis',
-                                    description: 'Create a Kano model table, comparing your features against competitors and considering regional factors.',
-                                    fullPrompt: 'Create a kano model table from our features. Compare these features to our competitors and layer in regional concerns for our product.'
+                                    title: 'Prioritising Opportunities Based on Company Goals',
+                                    description: "Rank opportunities based on alignment with Visa's strategy and potential business impact.",
+                                    fullPrompt: `AI Prompt:
+“We've identified the following opportunities: [paste list].
+Based on Visa's current strategy, goals, and OKRs — [brief summary or list] —
+Rank the top 3 opportunities by alignment to business impact
+
+
+Flag any that might be misaligned or controversial
+
+
+Recommend the one opportunity most likely to accelerate progress on the outcome.”
+
+
+Context to Provide:
+Opportunity list
+
+
+Relevant OKRs, product themes, or known business levers
+
+
+Expected Output:
+Ranked list with reasoning and a suggested focus area
+
+
+Considerations:
+Highlight internal tensions or misalignments as conversation starters
+
+
+Treat this as a prioritization hypothesis
+`
                                 },
                                 {
-                                    title: 'Define Success Metrics',
-                                    description: 'Use initial data to establish success metrics and identify a North Star metric to guide progress.',
-                                    fullPrompt: 'Use our rough thinking and discovery to help a set of success metrics that we can track our progress against. Highlight the most important metric using the North Star metric thinking.'
+                                    title: 'Outlining / Brainstorming Potential Solutions',
+                                    description: "Generate a diverse set of potential solutions for the prioritized opportunity, considering user flow, feature adjustments, and support mechanisms.",
+                                    fullPrompt: `AI Prompt:
+“Based on this prioritized opportunity — [insert statement] — generate a diverse set of potential solutions.
+Think beyond just UI changes and include:
+Changes to user flow
+
+
+Feature adjustments
+
+
+Education, onboarding, or support mechanisms
+
+ Return 5+ creative and practical options, with 1-2 sentence descriptions of each.”
+
+
+Context to Provide:
+Opportunity statement
+
+
+Any past solutions that have worked or failed
+
+
+Product constraints or boundaries (if any)
+
+
+Expected Output:
+Broad range of possible solution concepts
+
+
+Considerations:
+Quantity over quality at this stage
+
+
+Use analogy from other companies if helpful
+`
                                 },
                                 {
-                                    title: 'Generate "What If" Scenarios',
-                                    description: 'Use design sprint data to create 5 "What if" scenarios to test service reliability.',
-                                    fullPrompt: 'Take our design sprint data and create 5 "What if" scenarios to help us understand the reliability of our service.'
+                                    title: 'Prioritising Solutions & Assumption Mapping',
+                                    description: 'Rank potential solutions based on expected customer impact and identify key assumptions to validate.',
+                                    fullPrompt: `AI Prompt:
+“We've brainstormed these solutions: [paste list].
+Based on our product strategy and this customer context — [brief description] —
+Rank the solutions in terms of likely customer impact
+
+
+For the top 2, list the key assumptions we'd need to test
+
+
+Suggest how to prototype or validate each solution quickly.”
+
+
+Context to Provide:
+Strategy lens (customer segment, product goals)
+
+
+Resource constraints (lightweight testing preferred)
+
+
+Expected Output:
+Prioritized shortlist with testable assumptions
+
+
+Considerations:
+Focus on uncertainty, not effort
+
+
+Assume nothing is “known” until validated
+`
                                 },
                                 {
-                                    title: 'Build Business Strategy (7 Powers)',
-                                    description: 'Apply the 7 Powers framework to build a compelling and cohesive business strategy from your roadmap items.',
-                                    fullPrompt: 'Use the 7 powers framework to help build out a compelling busing strategy from items in our roadmap. Help us ensure our roadmap is compelling but also cohesive.'
+                                    title: 'Prototyping Potential Solutions',
+                                    description: 'Create low-fidelity prototypes or sketches for the top solutions to visualize user journeys and interactions.',
+                                    fullPrompt: `AI Prompt:
+“Take these two high-priority solutions and sketch the end-to-end user journey for each.
+Include key steps, touchpoints, and where value is delivered.
+Focus on these personas: [insert user type]
+Highlight potential moments of friction or delight.”
+Context to Provide:
+Persona or use case
+
+
+Assumptions being tested
+
+
+Expected Output:
+Annotated flows or journey descriptions
+
+
+Considerations:
+Favor speed and clarity
+
+
+Use this to identify moments to test and learn from
+`
                                 },
                                 {
-                                    title: 'Prototype a Dashboard',
-                                    description: 'Build a dashboard prototype for a payments report system used by retail customers to track cyber crime.',
-                                    fullPrompt: 'Build a dashboard prototype for a payments reports system that would be used by retail customers to track cyber crime transactions.'
+                                    title: 'Developing a Test Plan',
+                                    description: 'Create a lean test plan to validate the top solution concepts, focusing on key assumptions and user signals.',
+                                    fullPrompt: `AI Prompt:
+“Help us create a test plan for the following solution: [insert concept]
+The goal is to test:
+[Insert key assumptions]
+
+
+[Insert desired user behavior or signal]
+
+ Return a simple test plan with:
+
+
+Hypotheses
+
+
+Success metrics
+
+
+Timeframe
+
+
+What data or feedback we need to gather”
+
+
+Context to Provide:
+Selected solution
+
+
+Assumptions and metrics of interest
+
+
+Expected Output:
+Lean test plan that drives learning fast
+
+
+Considerations:
+Small scope, fast turnaround
+
+
+Track signals, not just outcomes
+`
                                 },
                                 {
                                     title: 'Create a PRFAQ Document',
