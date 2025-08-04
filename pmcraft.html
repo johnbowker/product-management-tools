@@ -57,6 +57,16 @@
 
         <!-- Main Content -->
         <main class="container mx-auto p-4 md:p-8">
+            <div class="text-left flex justify-end">
+                <label class="block mt-4 mb-4">
+                    <span class="text-gray-700 text-slate-300 font-bold">🤖 AI Model</span>
+                    <select v-model="selectedLLM" class="form-select mt-1 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <option>ChatGPT</option>
+                        <option>MS Co-Pilot</option>
+                        <option>Claude</option>
+                    </select>
+                </label>
+            </div>
             <!-- Loop through each category -->
             <section v-for="category in promptCategories" :key="category.name" class="mb-12">
                 <div class="flex items-center mb-6">
@@ -76,7 +86,7 @@
                              <!-- The button that triggers the copy and launch action -->
                             <button @click="launchChatGPT(prompt.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                <span>Copy & Launch Co-Pilot 📎</span>
+                                <span>Copy & Launch AI</span>
                             </button>
                         </div>
                     </div>
@@ -88,7 +98,7 @@
         <transition name="toast">
             <div v-if="showNotification" class="fixed bottom-5 right-5 bg-gray-900 text-white py-3 px-6 rounded-lg shadow-xl">
                 <p><i class="fa-solid fa-copy mr-2"></i>Prompt copied to clipboard!</p>
-                <p><i class="fa-solid fa-robot mr-2"></i>Launching Co-Pilot</p>
+                <p><i class="fa-solid fa-robot mr-2"></i>Launching AI</p>
             </div>
         </transition>
 
@@ -100,6 +110,7 @@
         createApp({
             data() {
                 return {
+                    selectedLLM: 'ChatGPT', // Default selected LLM
                     showNotification: false, // Controls the visibility of the copy notification
                     promptCategories: [ // The main data structure for all prompts
                         {
@@ -123,7 +134,7 @@ Making it specific and measurable
 Focusing on a change in user behavior or experience
 
 
-Aligning it to Visa's mission to improve product activation and value delivery
+Aligning it to my organisation's mission to improve product activation and value delivery
 
  Return 3 improved outcome statements, along with a 1-line rationale for each.”
 
@@ -168,15 +179,15 @@ Considerations:
 Prioritize real-world user pain
 
 
-Highlight issues Visa has the ability to address today
+Highlight issues my organisation has the ability to address today
 `
                                 },
                                 {
                                     title: 'Prioritising Opportunities Based on Company Goals',
-                                    description: "Rank opportunities based on alignment with Visa's strategy and potential business impact.",
+                                    description: "Rank opportunities based on alignment with my organisation's strategy and potential business impact.",
                                     fullPrompt: `AI Prompt:
 “We've identified the following opportunities: [paste list].
-Based on Visa's current strategy, goals, and OKRs — [brief summary or list] —
+Based on my organisation's current strategy, goals, and OKRs — [brief summary or list] —
 Rank the top 3 opportunities by alignment to business impact
 
 
@@ -425,6 +436,7 @@ Track signals, not just outcomes
                  * @param {string} promptText - The full prompt to be copied.
                  */
                 async launchChatGPT(promptText) {
+
                     // Create a temporary textarea element to hold the text
                     const textArea = document.createElement('textarea');
                     textArea.value = promptText;
@@ -450,11 +462,20 @@ Track signals, not just outcomes
                             // Attempt to open the specified URL with the prompt
                             var URL = "https://copilot.microsoft.com/"
 
+                            if(this.selectedLLM === 'ChatGPT') {
+                                URL = "https://chat.openai.com/chat";
+                            } else if(this.selectedLLM === 'MS Co-Pilot') {
+                                URL = "https://copilot.microsoft.com/";
+                            } else if(this.selectedLLM === 'Claude') {
+                                URL = "https://claude.ai/new";
+                            }
+
                             await nextTick();
 
                             setTimeout(() => {
-                                window.open(URL + "?q=" + encodeURIComponent(promptText), '_blank');
-                                // Perform your desired action here
+                                let prompt = URL + "?q=" + encodeURIComponent(promptText)
+                                console.log('Opening URL:', prompt);
+                                window.open(prompt, '_blank');
                                 }, 1000); // 1000 milliseconds = 1 second
 
                             
