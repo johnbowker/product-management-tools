@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>PromptCraft PM 🚀</title>
+    <title>Colab Toolkit 🧰</title>
     <!-- Vue.js CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- Tailwind CSS CDN -->
@@ -459,6 +459,9 @@ Track signals, not just outcomes
                     
                     // Select the text and execute the copy command
                     textArea.select();
+
+                    const successful = document.execCommand('copy');
+                    
                     document.body.removeChild(textArea);
 
                     this.showNotification = true;

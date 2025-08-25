@@ -459,6 +459,9 @@ Track signals, not just outcomes
                     
                     // Select the text and execute the copy command
                     textArea.select();
+
+                    const successful = document.execCommand('copy');
+                    
                     document.body.removeChild(textArea);
 
                     this.showNotification = true;
