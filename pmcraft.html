@@ -56,13 +56,14 @@
     <div id="app" class="antialiased text-slate-700">
         <!-- Header -->
         <header class="bg-gray-900 shadow-lg sticky top-0 z-10">
-            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    
-                    <a href="https://colabcohorts.com" target="_blank"><img src="https://colabcohorts.com/wp-content/uploads/2025/03/logo.svg" class="h-8 object-cover"/></a>
-                        
+            <div class="container mx-auto py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">  
+                    <a href="https://colabcohorts.com" target="_blank"><img src="https://colabcohorts.com/wp-content/uploads/2025/03/logo.svg" class="h-8 object-cover"/></a>    
                 </div>
-                <p class="hidden md:block text-sm text-slate-300">AI Prompt Library</p>
+                <div class="flex space-x-4">
+                    <a href="https://colabcommunity.circle.so/c/welcome-to-colab-cohorts/" target="_blank" class="bg-white rounded-full hover:bg-gray-700 "><div class="ps-6 pe-6 pb-2 pt-2 text-gray-700 font-semibold hover:text-white">Member Area</div></a>
+                    <a href="https://colabcohort.typeform.com/to/gUEjtYVU?typeform-source=colabcohorts.com/toolkit" target="_blank" class="bg-white rounded-full hover:bg-gray-700 "><div class="ps-6 pe-6 pb-2 pt-2 text-gray-700 font-semibold hover:text-white">Apply</div></a>
+                </div>
             </div>
         </header>
 
@@ -75,6 +76,7 @@
                         <option>ChatGPT</option>
                         <option>MS Co-Pilot</option>
                         <option>Claude</option>
+                        <option>Gemini</option>
                     </select>
                 </label>
             </div>
@@ -461,7 +463,7 @@ Track signals, not just outcomes
                     textArea.select();
 
                     const successful = document.execCommand('copy');
-                    
+
                     document.body.removeChild(textArea);
 
                     this.showNotification = true;
@@ -509,6 +511,9 @@ Track signals, not just outcomes
                             } else if(this.selectedLLM === 'Claude') {
                                 URL = "https://claude.ai/new";
                             }
+                            else if(this.selectedLLM === 'Gemini') {
+                                URL = "https://gemini.google.com/app";
+                            }
 
                             await nextTick();
 
@@ -533,5 +538,66 @@ Track signals, not just outcomes
         }).mount('#app')
     </script>
 
+    <!-- Footer Section -->
+    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+        <div class="mx-auto w-full max-w-screen-xl p-6 py-8 lg:py-10">
+            <div class="md:flex md:justify-between">
+                <!-- Navigation Links -->
+                <div class="grid grid-cols-4 gap-8 sm:gap-10 sm:grid-cols-4">
+                    <div>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Colab</h2>
+                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                            <li class="mb-2">
+                                <a href="https://colabcohorts.com" target="_blank">About Us</a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://colabcohorts.com/blog/" target="_blank">Blog</a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://colabcohorts.com/privacy-policy/" target="_blank">Privacy Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Programs</h2>
+                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                            <li class="mb-2">
+                                <a href="https://colabcohorts.com/our-programs/#moving-in" target="_blank" >Moving In</a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://colabcohorts.com/our-programs/#moving-up" target="_blank">Moving Up</a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://colabcohorts.com/our-programs/#moving-togeth" target="_blank">Moving Together</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Social Media</h2>
+                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                            <li class="mb-2">
+                                <a href="https://www.linkedin.com/company/colabcohorts/">LinkedIn</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Contact</h2>
+                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                            <li class="mb-2">
+                                <a href="mailto:hello@colabcohorts.com" class="hover:underline">hello@colabcohorts.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom section with Copyright and Social Icons -->
+            <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"><a href="https://colabcohorts.com" >Colab Cohorts © 2025 </a>
+                </span>
+                <img src="https://colabcohorts.com/wp-content/themes/colabcohorts/images/brand.svg" class="h-16 object-cover"/>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
