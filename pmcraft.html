@@ -25,6 +25,29 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+         /* Custom styles for the megamenu animation and layout */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* The container for the megamenu dropdown */
+        .megamenu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+        }
+
+        /* The parent list item that triggers the megamenu */
+        .has-megamenu:hover .megamenu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
         /* Custom font and base styling */
         body {
             font-family: 'Inter', serif;
@@ -52,19 +75,99 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <div id="app" class="antialiased text-slate-700">
         <!-- Header -->
-        <header class="bg-gray-900 shadow-lg sticky top-0 z-10">
-            <div class="container mx-auto py-4 flex justify-between items-center">
-                <div class="flex items-center space-x-2">  
+        <header class="bg-gray-900 shadow-lg sticky top-0 z-10 pb-4 pt-3">
+             <nav class="shadow-md relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
                     <a href="https://colabcohorts.com" target="_blank"><img src="https://colabcohorts.com/wp-content/uploads/2025/03/logo.svg" class="h-8 object-cover"/></a>    
                 </div>
-                <div class="flex space-x-4">
-                    <a href="https://colabcommunity.circle.so/c/welcome-to-colab-cohorts/" target="_blank" class="bg-white rounded-full hover:bg-gray-700 "><div class="ps-6 pe-6 pb-2 pt-2 text-gray-700 font-semibold hover:text-white">Member Area</div></a>
-                    <a href="https://colabcohort.typeform.com/to/gUEjtYVU?typeform-source=colabcohorts.com/toolkit" target="_blank" class="bg-white rounded-full hover:bg-gray-700 "><div class="ps-6 pe-6 pb-2 pt-2 text-gray-700 font-semibold hover:text-white">Apply</div></a>
+                <!-- Main Navigation Links -->
+                <div class="hidden md:block">
+                    <ul class="ml-10 flex items-baseline space-x-4 text-gray-200">
+    
+                        <!-- Products link with Megamenu -->
+                        <li class="has-megamenu">
+                            <a href="#" class="hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-m font-medium flex items-center">
+                                <span>Products</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </a>
+
+                            <!-- Megamenu Dropdown -->
+                            <div class="megamenu mt-4 bg-gray-900 rounded-lg shadow-xl text-center flex justify-center">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                                        <!-- Column 1 -->
+                                        <div class="col-span-1">
+                                            <ul class="mt-4 space-y-4">
+                                                <li><a href="https://colabcohorts.com/our-programs/" class="text-base hover:text-indigo-600">Live Cohorts</a></li>
+                                                <li><a href="https://colabcohorts.com/on-demand-learning/" class="text-base hover:text-indigo-600">On Demand</a></li>
+                                                <li><a href="https://colabcohorts.com/mentorship/nz/" class="text-base hover:text-indigo-600">Mentorship NZ</a></li>
+                                                <li><a href="https://colabcohorts.com/mentorship/uk/" class="text-base hover:text-indigo-600">Mentorship UK</a></li>
+                                                <li><a href="https://colabcohorts.com/pricing/" class="text-base hover:text-indigo-600">Pricing</a></li>
+                                                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li><a href="https://colabcohorts.com/blog/" class="hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-m font-medium">Blog</a></li>
+                        <li class="has-megamenu">
+                            <a href="#" class="hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-m font-medium flex items-center">
+                                <span>Team Training</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </a>
+
+                            <!-- Megamenu Dropdown -->
+                            <div class="megamenu mt-4 bg-gray-900 rounded-lg shadow-xl text-center flex justify-end">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                                        <!-- Column 1 -->
+                                        <div class="col-span-1">
+                                            <ul class="mt-4 space-y-4">
+                                                <li><a href="https://colabcohorts.com/team-training/" class="text-base hover:text-indigo-600">Team Solutions</a></li>
+                                                <li><a href="https://colabcohorts.com/team-training/miro-product-training/" class="text-base hover:text-indigo-600">Miro Enablement</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Megamenu Dropdown -->
+                            <div class="megamenu mt-4 bg-gray-900 rounded-lg shadow-xl text-center flex justify-center">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                                        <!-- Column 1 -->
+                                        <div class="col-span-1">
+                                            <ul class="mt-4 space-y-4">
+                                                <li><a href="https://colabcohorts.com/our-programs/" class="text-base text-gray-500 hover:text-indigo-600">Live Cohorts</a></li>
+                                                <li><a href="https://colabcohorts.com/on-demand-learning/" class="text-base text-gray-500 hover:text-indigo-600">On Demand</a></li>
+                                                <li><a href="https://colabcohorts.com/mentorship/nz/" class="text-base text-gray-500 hover:text-indigo-600">Mentorship NZ</a></li>
+                                                <li><a href="https://colabcohorts.com/mentorship/uk/" class="text-base text-gray-500 hover:text-indigo-600">Mentorship UK</a></li>
+                                                <li><a href="https://colabcohorts.com/pricing/" class="text-base text-gray-500 hover:text-indigo-600">Pricing</a></li>
+                                                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </ul>
+                </div>
+                <!-- Call to Action Button -->
+                <div class="hidden md:block">
+                     <div class="flex space-x-4">
+                        <a href="https://colabcommunity.circle.so/c/welcome-to-colab-cohorts/" target="_blank" class="bg-white rounded-full hover:bg-gray-700 "><div class="ps-6 pe-6 pb-2 pt-2 text-gray-700 font-semibold hover:text-white">Member Area</div></a>
+                        <a href="https://colabcohort.typeform.com/to/gUEjtYVU?typeform-source=colabcohorts.com/toolkit" target="_blank" class="bg-white rounded-full hover:bg-gray-700 "><div class="ps-6 pe-6 pb-2 pt-2 text-gray-700 font-semibold hover:text-white">Apply</div></a>
+                    </div>
                 </div>
             </div>
+        </div>
+    </nav>
         </header>
 
         <!-- Main Content -->
@@ -121,8 +224,11 @@
 
     </div>
 
+
     <script>
+
         const { createApp, nextTick } = Vue
+        
         createApp({
             data() {
                 return {
@@ -535,6 +641,7 @@ Track signals, not just outcomes
                     document.body.removeChild(textArea);
                 }
             }
+
         }).mount('#app')
     </script>
 
@@ -545,7 +652,7 @@ Track signals, not just outcomes
                 <!-- Navigation Links -->
                 <div class="grid grid-cols-4 gap-8 sm:gap-10 sm:grid-cols-4">
                     <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Colab</h2>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase text-white dark:text-white">Colab</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-2">
                                 <a href="https://colabcohorts.com" target="_blank">About Us</a>
@@ -559,7 +666,7 @@ Track signals, not just outcomes
                         </ul>
                     </div>
                     <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Programs</h2>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase text-white dark:text-white">Programs</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-2">
                                 <a href="https://colabcohorts.com/our-programs/#moving-in" target="_blank" >Moving In</a>
@@ -573,7 +680,7 @@ Track signals, not just outcomes
                         </ul>
                     </div>
                     <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Social Media</h2>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase text-white dark:text-white">Social Media</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-2">
                                 <a href="https://www.linkedin.com/company/colabcohorts/">LinkedIn</a>
