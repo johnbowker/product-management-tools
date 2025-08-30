@@ -69,6 +69,81 @@
             opacity: 0;
             transform: translateY(20px);
         }
+        .modal-enter-active, .modal-leave-active {
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        .modal-enter-from, .modal-leave-to {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .dropbtn {
+        background-color: #3d3dcb;
+        color: white;
+        padding: 9px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+        position: relative;
+        display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+        display: block;
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+        background-color: #6255dd;
+        }
+
+        .modal-fixed-div {
+        position: fixed; /* Fixes the div relative to the viewport */
+        top: 50%; /* Moves the top edge to the vertical center of the viewport */
+        left: 50%; /* Moves the left edge to the horizontal center of the viewport */
+        transform: translate(-50%, -50%); /* Adjusts for the div's own dimensions to truly center it */
+        /* Add other styling properties as needed, e.g., width, height, background-color */
+        width: 600px;
+        height: 600px;
+        background-color: lightblue;
+        }
+        modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's above other content */
+        }
     </style>
      <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -174,13 +249,16 @@
         <main class="container mx-auto p-4 md:p-8">
             <div class="text-left flex justify-end">
                 <label class="block mt-4 mb-4">
-                    <span class="text-gray-700 text-slate-300 font-bold">🤖 AI Model</span>
-                    <select v-model="selectedLLM" class="form-select mt-1 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded pe-4">
-                        <option>ChatGPT</option>
-                        <option>MS Co-Pilot</option>
-                        <option>Claude</option>
-                        <option>Gemini</option>
-                    </select>
+                    
+                    <div class="dropdown">
+                        <button class="dropbtn rounded-lg ps-9 pe-9 font-bold mb-5">{{selectedLLM}} <span><i class="fa fa-robot"></i></span><span class="ps-3"><i class="fa fa-chevron-down"></i></span></button>
+                        <div class="dropdown-content rounded">
+                            <a href="#" @click="selectedLLM = 'ChatGPT'">ChatGPT</a>
+                            <a href="#" @click="selectedLLM = 'MS Co-Pilot'">MS Co-Pilot</a>
+                            <a href="#" @click="selectedLLM = 'Claude'">Claude</a>
+                            <a href="#" @click="selectedLLM = 'Gemini'">Gemini</a>
+                        </div>
+                    </div>
                 </label>
             </div>
             
@@ -201,6 +279,9 @@
                         </div>
                         <div class="bg-slate-50 p-4 flex justify-end items-center p-4 space-x-2">
                              <!-- The button that triggers the copy and launch action -->
+                              <button @click="showPromptModal(prompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
+                                <i class="fa fa-robot"></i>
+                            </button>
                             <button @click="copyPrompt(prompt.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
                                 <i class="fa fa-copy"></i>
                             </button>
@@ -222,6 +303,35 @@
             </div>
         </transition>
 
+        <transition name="modal">
+            <div class="bg-gray-900" v-if="showModal">
+                <div class="modal-fixed-div fixed bottom-5right-5 bg-gray-800 text-white py-3 px-6 rounded-lg shadow-xl">
+                   
+                    <div class="flex justify-between items-center mb-4">
+                         <p><i class="fa-solid fa-robot mr-2"></i>Prompt Details</p>
+                        <button @click="closePromptModal" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
+                            <i class="fa fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="h-96 mb-4 p-2 m-2 mb-5">
+                        <span class="font-bold text-lg text-slate-300 mb-4 rounded-full ">{{ fullPromptInfo.title }}</span>
+                        <p class="mt-4"> {{ fullPromptInfo.fullPrompt }}</p>
+                    </div>
+                    <div class=" p-1 flex justify-end items-center p-4 space-x-2">
+                            <button @click="copyPrompt(fullPromptInfo.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
+                                <i class="fa fa-copy"></i>
+                            </button>
+                            <button @click="launchChatGPT(fullPromptInfo.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                <span>Copy & Launch AI</span>
+                            </button>
+                        </div>
+                    
+                </div>
+                
+            </div>
+        </transition>
+
     </div>
 
 
@@ -235,6 +345,8 @@
                     launchLLM: false,
                     selectedLLM: 'ChatGPT', // Default selected LLM
                     showNotification: false, // Controls the visibility of the copy notification
+                    showModal: false, // Controls the visibility of the modal
+                    fullPromptInfo: {title: '', description: '', fullPrompt: ''},
                     promptCategories: [ // The main data structure for all prompts
                         {
                             name: "The Product Toolkit",
@@ -577,6 +689,16 @@ Track signals, not just outcomes
                             setTimeout(() => {
                                 this.showNotification = false;
                             }, 3000);
+                },
+                async showPromptModal(prompt) {
+                    this.fullPromptInfo = prompt;
+                    this.showModal = true;
+                },
+                async closePromptModal() {
+                    // Hide the modal after 3 seconds
+                    setTimeout(() => {
+                        this.showModal = false;
+                    }, 500);
                 },
                 /**
                  * Copies the given prompt to the clipboard using a fallback method,
