@@ -394,8 +394,17 @@
                                     description:'Being able to stress test your hypothesis with a customer-centred scenario helps ensure you are on the right track',
                                     fullPrompt:`Use this hypothesis and create a scenario I can use to test if I'm on the right track. 
                                     
-{My Hypothesis}, 
-{My Target Customer}`
+My Hypothesis is: {my hypothesis}, 
+My Target Customer is {my target customer}`
+                                },
+                                {
+                                    title: 'Refine My Metric',
+                                    description:'Help ensure your metric is focused on the outcome and not merely an output.',
+                                    fullPrompt:`Use my metric and help refine it to ensure it focuses on the outcome, is well-suited to the customer and is something worth tracking. 
+Offer at least 3 alternatives if there isn't alignment. 
+                                    
+My Metric is {my metric} 
+My Target Customer is {my target customer}`
                                 },
                                 {
                                     title: 'A cohesive onboarding experience',
