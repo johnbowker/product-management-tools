@@ -257,6 +257,17 @@
 
         <!-- Main Content -->
         <main class="container mx-auto p-4 md:p-2">
+            <!-- Search Bar -->
+            <div class="mb-8 mt-4">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fa fa-search text-gray-400"></i>
+                    </span>
+                    <input type="text" v-model="searchQuery" placeholder="Search for prompts..." class="w-full py-3 pl-10 pr-4 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+
+            <!-- LLM Selector -->
             <div class="text-left flex justify-end">
                 <label class="block mt-4 mb-4">
                     
@@ -300,7 +311,8 @@
             </div>
             
             <!-- Loop through each category -->
-            <section v-for="category in promptCategories" :key="category.name" class="mb-12">
+            <!-- Use filteredCategories here instead of promptCategories -->
+            <section v-for="category in filteredCategories" :key="category.name" class="mb-12">
                 <div class="flex items-center mb-6">
                     <span class="text-2xl mr-4 text-slate-300">{{ category.icon }}</span>
                     <h2 class="text-2xl font-bold text-slate-300">{{ category.name }}</h2>
@@ -373,8 +385,8 @@
 
 
     <script>
-
-        const { createApp, nextTick } = Vue
+        // Get Vue functions from the global object
+        const { createApp, nextTick, computed } = Vue
         
         createApp({
             data() {
@@ -384,6 +396,7 @@
                     showNotification: false, // Controls the visibility of the copy notification
                     showModal: false, // Controls the visibility of the modal
                     fullPromptInfo: {title: '', description: '', fullPrompt: ''},
+                    searchQuery: '', // Add searchQuery to data
                     promptCategories: [ // The main data structure for all prompts
                         {
                             name: "The Product Toolkit",
@@ -706,7 +719,7 @@ Track signals, not just outcomes
                                 {
                                     title: 'Prioritization Framework',
                                     description: 'Apply the RICE framework to a list of features to make data-informed prioritization decisions.',
-                                    fullPrompt: "I need to prioritize the following list of features for our next development cycle. Apply the RICE framework (Reach, Impact, Confidence, Effort) to help me decide. Here is the list of features with my estimated scores: [list features with R-I-C-E scores]. Calculate the RICE score for each and rank them."
+                                    fullPrompt: "I've to prioritize the following list of features for our next development cycle. Apply the RICE framework (Reach, Impact, Confidence, Effort) to help me decide. Here is the list of features with my estimated scores: [list features with R-I-C-E scores]. Calculate the RICE score for each and rank them."
                                 },
                                  {
                                     title: 'Draft a PRD Outline',
@@ -716,6 +729,33 @@ Track signals, not just outcomes
                             ]
                         }
                     ]
+                }
+            },
+            computed: {
+                // Computed property to filter categories based on searchQuery
+                filteredCategories() {
+                    // If no search query, return all categories
+                    if (!this.searchQuery) {
+                        return this.promptCategories;
+                    }
+
+                    const lowerCaseQuery = this.searchQuery.toLowerCase();
+
+                    // Map over categories to filter their prompts
+                    return this.promptCategories.map(category => {
+                        // Filter prompts within the category
+                        const filteredPrompts = category.prompts.filter(prompt => {
+                            const titleMatch = prompt.title.toLowerCase().includes(lowerCaseQuery);
+                            const descriptionMatch = prompt.description.toLowerCase().includes(lowerCaseQuery);
+                            return titleMatch || descriptionMatch;
+                        });
+
+                        // Return a new category object with filtered prompts
+                        return {
+                            ...category,
+                            prompts: filteredPrompts
+                        };
+                    }).filter(category => category.prompts.length > 0); // Filter out categories with no matching prompts
                 }
             },
             methods: {
