@@ -138,8 +138,8 @@
         left: 50%; /* Moves the left edge to the horizontal center of the viewport */
         transform: translate(-50%, -50%); /* Adjusts for the div's own dimensions to truly center it */
         /* Add other styling properties as needed, e.g., width, height, background-color */
-        width: 600px;
-        height: 720px;
+        width: 800px;
+        height: 700px;
         background-color: lightblue;
         }
         modal-bg {
@@ -154,6 +154,19 @@
             align-items: center;
             z-index: 1000; /* Ensure it's above other content */
         }
+        pre {
+            font-size: 20px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-x: auto; /* Enables horizontal scrolling if content overflows */
+            overflow-y: auto; /* Enables vertical scrolling if content overflows */
+            max-height: 650px; /* Optional: Sets a maximum height for vertical scrolling */
+            white-space: pre; /* Ensures preformatted text behavior */
+            border: 1px solid #ccc; /* Optional: Adds a border for visual clarity */
+            border-radius: 1%;
+            padding: 2px; /* Optional: Adds some padding inside the pre tag */
+        
+        }   
     </style>
      <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -354,7 +367,7 @@
 
         <transition name="modal">
             <div class="bg-gray-900" v-if="showModal">
-                <div class="modal-fixed-div fixed bottom-5right-5 bg-gray-800 text-white py-3 px-6 rounded-lg shadow-xl">
+                <div class="modal-fixed-div fixed bottom-5 right-5 bg-gray-800 text-white py-3 px-6 rounded-lg shadow-xl">
                    
                     <div class="flex justify-between items-center mb-4">
                          <p><i class="fa-solid fa-robot mr-2"></i>Prompt Details</p>
@@ -364,17 +377,17 @@
                     </div>
                     <div class="h-96 mb-4 p-2 m-2 mb-5">
                         <span class="font-bold text-lg text-slate-300 mb-4 rounded-full ">{{ fullPromptInfo.title }}</span>
-                        <p class="mt-4"> {{ fullPromptInfo.fullPrompt }}</p>
+                        <pre class="mt-4"> <code> {{ fullPromptInfo.fullPrompt }} </code></pre>
                     </div>
-                    <div class=" p-1 flex justify-end items-center p-4 space-x-2">
-                            <button @click="copyPrompt(fullPromptInfo.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
-                                <i class="fa fa-copy"></i>
-                            </button>
-                            <button @click="launchChatGPT(fullPromptInfo.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                <span>Copy & Launch AI</span>
-                            </button>
-                        </div>
+                    <div class="p-8 flex absolute bottom-0 right-0 mt-auto justify-end items-center mb-8 py-8 space-x-2">
+                        <button @click="copyPrompt(fullPromptInfo.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
+                            <i class="fa fa-copy"></i>
+                        </button>
+                        <button @click="launchChatGPT(fullPromptInfo.fullPrompt)" class="rounded-full bg-slate-900 text-white font-bold py-2 px-4 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200 flex items-center space-x-2">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>Copy & Launch AI</span>
+                        </button>
+                    </div>
                     
                 </div>
                 
@@ -406,9 +419,10 @@
                                     title:'Build a Compelling Story',
                                     description:'Transform your raw notes into an engaging narrative that can resonate with your stakeholders',
                                     fullPrompt:`
-                                    Act as a Senior Product Communications Coach. I am going to provide you with a raw "brain dump" of a project or feature update I need to present to executives.
+Act as a Senior Product Communications Coach. I am going to provide you with a raw "brain dump" of a project or feature update I need to present to executives.
 
 Your goal is to transform my messy notes into a "Steve Jobs style" 3-Act Narrative.
+
 
 The Rules:
 No Jargon: Remove all internal acronyms and technical fluff.
@@ -424,7 +438,8 @@ Acknowledge if you are ready, and I will paste my notes.
                                 {
                                     title:'Executive Alignment & Understanding',
                                     description:'Help frame your messages to build trust and alignment with your key stakeholders.',
-                                    fullPrompt:`Act as a ruthless Executive Communications Chief of Staff. I am going to provide you with a draft update or request intended for a VP/C-Level audience.
+                                    fullPrompt:`
+Act as a ruthless Executive Communications Chief of Staff. I am going to provide you with a draft update or request intended for a VP/C-Level audience.
 
 Your goal is to rewrite it using the Minto Pyramid Principle and High-Agency "Owner" Language.
 
